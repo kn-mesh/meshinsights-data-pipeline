@@ -1,5 +1,21 @@
-# uv quickstart
+# MeshInsights Data Pipeline
 
+## Overview
+A lightweight, composable pipeline framework for analytics:
+- Context: shared state model flowing through the pipeline
+- Processor: a single, reusable step operating on the context
+- Pipeline: orchestrates processors, conditions, checkpoints, and logging
+
+
+## Key Concepts
+- `PipelineContext`: Core reusable data model with explicit extension points (`config`, `stages`, `processed_data`, optional domain sub-models).
+- `Processor`: Stateless step; reads from context and returns an updated context (immutability by convention).
+- `Pipeline`: Executes processors in order, supports conditional execution, error policy, and optional checkpoints.
+
+
+
+
+# uv quickstart
 ## Initial Setup
 1. Initialize uv project: `uv init`
 2. Set Python version: `uv python pin 3.12.10` (or `uv venv --python 3.12.10`)
@@ -42,22 +58,3 @@ After making changes, run `uv sync` to install the dependencies.
 ### For scripts with src imports
 - Run Python modules: `uv run python -m src.apps.main`
 - Run Streamlit apps: `uv run python -m streamlit run src/streamlit_apps/app.py`
-
-### Why `python -m` is needed
-When using Streamlit or other tools that spawn subprocesses, use `python -m` to ensure the Python environment is properly configured. Direct commands like `uv run streamlit run` may fail with import errors.
-
-## Common Issues
-
-### "ModuleNotFoundError: No module named 'src'"
-This means your package isn't installed in editable mode. Fix with:
-```bash
-uv pip install -e .
-# or
-uv sync --reinstall-package your-package-name
-```
-
-### Slow first run
-The first run after `uv sync` can be slow due to:
-- Package installation in editable mode
-- Python bytecode compilation
-- Heavy dependency imports (pandas, scikit-learn, etc.)
